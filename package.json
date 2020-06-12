@@ -1,0 +1,59 @@
+{
+  "name": "coulomb",
+  "version": "0.0.1",
+  "description": "Pass your units of plain HTML to create a current of AMP HTML",
+  "author": {
+    "name": "Jesse B. Hannah",
+    "email": "jesse@jbhannah.net",
+    "url": "https://jbhannah.net"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jbhannah/coulomb.git"
+  },
+  "keywords": [
+    "amp",
+    "html",
+    "amphtml",
+    "amperize",
+    "rehype",
+    "unified"
+  ],
+  "homepage": "https://github.com/jbhannah/coulomb",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "rm -rf .nyc_output coverage dist",
+    "coverage": "nyc report",
+    "start": "ts-node src/index.ts",
+    "test": "nyc ava",
+    "watch": "concurrently \"npm:watch:*\"",
+    "watch:build": "npm run build -- -w",
+    "watch:test": "npm run test -- -w"
+  },
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@types/concurrently": "^5.2.1",
+    "@types/node": "^14.0.13",
+    "@types/sinon": "^9.0.4",
+    "@typescript-eslint/eslint-plugin": "^3.2.0",
+    "@typescript-eslint/parser": "^3.2.0",
+    "ava": "^3.8.2",
+    "concurrently": "^5.2.0",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "nyc": "^15.1.0",
+    "prettier": "^2.0.5",
+    "sinon": "^9.0.2",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  },
+  "engines": {
+    "node": ">= 10.0"
+  }
+}

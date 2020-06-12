@@ -1,0 +1,52 @@
+---
+name: Tests
+on:
+  - push
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version:
+          - 10
+          - 12
+          - 14
+        os:
+          - macos-latest
+          - ubuntu-16.04
+          - ubuntu-18.04
+          - windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ matrix.os }}-${{ matrix.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-${{ matrix.node-version }}-build-${{ env.cache-name }}-
+            ${{ matrix.os }}-${{ matrix.node-version }}-build-
+            ${{ matrix.os }}-${{ matrix.node-version }}-
+      - run: npm ci
+      - run: npm run clean
+      - run: npm run build
+      - run: npm test
+      - run: npm run coverage -- --reporter=lcov
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: run-${{ matrix.os }}-${{ matrix.node-version }}
+          parallel: true
+  finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
